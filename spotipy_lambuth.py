@@ -13,8 +13,8 @@ from spotipy.oauth2 import SpotifyOAuth
 
 scope = 'user-top-read'
 username = 'lambuth'
-client_id = 'e651edc8caf94abcbac8ee3faaca3236'
-client_secret = '7daf8f754d874d4689db554df936d845'
+client_id = '0'
+client_secret = '0'
 redirect_uri = 'http://localhost:8888'
 
 #token = util.prompt_for_user_token(username, scope, client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri)
