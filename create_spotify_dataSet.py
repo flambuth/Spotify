@@ -10,7 +10,7 @@ short_term (approximately last 4 weeks)
 
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from collections import Counterfrom collections import Counter
+from collections import Counter
 
 scope = 'user-top-read'
 username = 'lambuth'
