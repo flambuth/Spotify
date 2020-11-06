@@ -1,10 +1,17 @@
 #! python
 import sys
 import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+from config import username
+from spotipy.oauth2 import SpotifyOAuth
+#from collections import Counter
 
-client_credentials_manager = SpotifyClientCredentials()
-sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
+
+scope = 'user-top-read'
+
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope, username=username))
+
+ranges = ['short_term', 'medium_term', 'long_term']
 
 #inp = input("Enter an Artist ID")
 
