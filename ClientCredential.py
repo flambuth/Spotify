@@ -1,3 +1,4 @@
+#! python
 # -*- coding: utf-8 -*-
 """
 Created on Sat Sep  5 20:50:41 2020
@@ -9,6 +10,12 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 client_credentials_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
+
+#%%
+
+def get_artist_genre_tags(artist_id):
+    return sp.artist(artist_id)['genres']
+
 
 #%%
 artist_name = []
@@ -25,9 +32,3 @@ for i in range(0,10,50):
         popularity.append(t['popularity'])
         
 #%%
-import pandas as pd
-
-track_dataframe = pd.DataFrame({'artist_name' : artist_name, 'track_name' : track_name, 'track_id' : track_id, 'popularity' : popularity})
-
-print(track_dataframe.shape)
-track_dataframe.head()
