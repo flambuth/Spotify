@@ -27,7 +27,10 @@ ranges = ['short_term', 'medium_term', 'long_term']
 #   len(results['items']) == 10, the size of the limit parameter
 #results['items'] is a dict. Keys = ['external_urls', 'followers', 'genres', 'href', 'id', 'images', 'name', 'popularity', 'type', 'uri']
 #%%
-def get_top_tracks_artists():
+def get_user_top_tracks_artists():
+    '''
+    Returns a 3x20 dataframe of the top most played tracks in user's short term range
+    '''
     x = sp.current_user_top_tracks(time_range='short_term')
     cols = ['art_id', 'art_name','album_name','song_id']
     art_id = [i['artists'][0]['id'] for i in x['items']]
@@ -35,6 +38,22 @@ def get_top_tracks_artists():
     album_name = [i['album']['name'] for i in x['items']]
     song_id = [i['external_urls']['spotify'][-22:-1] for i in x['items']]
     values = [art_id,art_name,album_name,song_id]
+    return pd.DataFrame((dict(zip(cols, values))))
+
+def get_artist_top_ten_tracks(artist_id, country='US'):
+    '''
+    Returns a 2x10 dataframe of the top most played tracks from an artist. Probably
+    of all time.
+       
+    Country set to default. Can only do one country at a time. Set the default for US.
+    Not sure what happens if country isn't set.
+    https://api.spotify.com/v1/artists/{id}/top-tracks
+    '''
+    x =  sp.artist_top_tracks(artist_id, country)
+    cols = ['song_id', 'song_name'] 
+    song_id = [track['uri'][-22:-1] for track in x['tracks']]
+    song_name = [sp.track(track['uri'])['name'] for track in x['tracks']]
+    values = [song_id,song_name]
     return pd.DataFrame((dict(zip(cols, values))))
 
 #%%
