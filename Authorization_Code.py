@@ -7,7 +7,7 @@ long_term (calculated from several years of data and including all new data as i
 medium_term (approximately last 6 months), 
 short_term (approximately last 4 weeks)
 """
-
+import pandas as pd
 import spotipy
 from config import username
 from spotipy.oauth2 import SpotifyOAuth
@@ -28,7 +28,6 @@ ranges = ['short_term', 'medium_term', 'long_term']
 #results['items'] is a dict. Keys = ['external_urls', 'followers', 'genres', 'href', 'id', 'images', 'name', 'popularity', 'type', 'uri']
 #%%
 def get_top_tracks_artists():
-    import pandas as pd
     x = sp.current_user_top_tracks(time_range='short_term')
     cols = ['art_id', 'art_name','album_name','song_id']
     art_id = [i['artists'][0]['id'] for i in x['items']]

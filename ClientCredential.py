@@ -16,6 +16,8 @@ sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
 def get_artist_genre_tags(artist_id):
     return sp.artist(artist_id)['genres']
 
+def get_artist_top_ten_tracks(artist_id):
+    return sp.artist_top_tracks(artist_id)
 
 #%%
 artist_name = []
