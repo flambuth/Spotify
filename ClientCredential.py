@@ -15,11 +15,16 @@ sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
 #%%
 
 def get_artist_genre_tags(artist_id):
+    '''
+    Returns a list that comes from genres key whe using the artist_id endpoint
+    '''
     return sp.artist(artist_id)['genres']
 
 def get_artist_top_ten_tracks(artist_id, country='US'):
     '''
-    Get Spotify catalog information about an artist’s top 10 tracks by country.
+    Returns a 2x10 dataframe of the top most played tracks from an artist. Probably
+    of all time.
+       
     Country set to default. Can only do one country at a time. Set the default for US.
     Not sure what happens if country isn't set.
     https://api.spotify.com/v1/artists/{id}/top-tracks
