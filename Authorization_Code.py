@@ -59,6 +59,7 @@ def get_artist_top_ten_tracks(artist_id, country='US'):
 #%%
 #Gets top artist in 3 time ranges
 def print_user_top_artists_in_3_ranges():
+    ranges = ['short_term', 'medium_term', 'long_term']
     for sp_range in ranges:
         print("range:", sp_range)
         results = sp.current_user_top_artists(time_range=sp_range, limit=10)
@@ -72,31 +73,34 @@ def get_user_top_artists_in_3_ranges():
     Should return 3 dataframe(short,medium,long). Each dataframe should be 3 cols wide
     and 10 rows.
     '''
+    ranges = ['short_term', 'medium_term', 'long_term']
     for sp_range in ranges:
         print("range:", sp_range)
+        blob = []
         results = sp.current_user_top_artists(time_range=sp_range, limit=10)
-        for i, item in enumerate(results['items']):
-            print(i, item['name'], item['genres'])
+        for i in results['items']:
+            blob.append([sp_range,i['name'], i['genres']])
             #print(i, item['name'], '//', item['artists'][0]['name'])
-        return
+        
+    return pd.DataFrame(blob)
     
 
 #%%
 #Gets a lot of genres from the long-range parameter
 
-def get_longterm_genres(limit):
-    results = sp.current_user_top_artists(time_range='long_term', limit=limit)
-    for i, item in enumerate(results['items']):
-        print(i, item['name'], item['genres'])
-        #print(i, item['name'], '//', item['artists'][0]['name'])
-    return results
+# def get_ulongterm_genres(limit):
+#     results = sp.current_user_top_artists(time_range='long_term', limit=limit)
+#     for i, item in enumerate(results['items']):
+#         print(i, item['name'], item['genres'])
+#         #print(i, item['name'], '//', item['artists'][0]['name'])
+#     return results
 
-#makes a list of lists. Each item is a list of genre tags. One list per band
-spam = [i['genres'] for i in results['items']]
+# #makes a list of lists. Each item is a list of genre tags. One list per band
+# spam = [i['genres'] for i in results['items']]
 
-#flattens that list of lists into one big list, with repeats
-flat_list = []
-for sublist in spam:
-    for item in sublist:
-        flat_list.append(item)
+# #flattens that list of lists into one big list, with repeats
+# flat_list = []
+# for sublist in spam:
+#     for item in sublist:
+#         flat_list.append(item)
         
