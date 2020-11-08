@@ -58,25 +58,29 @@ def get_artist_top_ten_tracks(artist_id, country='US'):
 
 #%%
 #Gets top artist in 3 time ranges
-for sp_range in ranges:
-    print("range:", sp_range)
-    results = sp.current_user_top_artists(time_range=sp_range, limit=10)
-    for i, item in enumerate(results['items']):
-        print(i, item['name'])
-        #print(i, item['name'], '//', item['artists'][0]['name'])
-    print()
+def print_user_top_artists_in_3_ranges():
+    for sp_range in ranges:
+        print("range:", sp_range)
+        results = sp.current_user_top_artists(time_range=sp_range, limit=10)
+        for i, item in enumerate(results['items']):
+            print(i, item['name'], item['genres'])
+            #print(i, item['name'], '//', item['artists'][0]['name'])
+        print()
+        
+def get_user_top_artists_in_3_ranges():
+    '''
+    Should return 3 dataframe(short,medium,long). Each dataframe should be 3 cols wide
+    and 10 rows.
+    '''
+    for sp_range in ranges:
+        print("range:", sp_range)
+        results = sp.current_user_top_artists(time_range=sp_range, limit=10)
+        for i, item in enumerate(results['items']):
+            print(i, item['name'], item['genres'])
+            #print(i, item['name'], '//', item['artists'][0]['name'])
+        return
     
-#%%
-#Gets top artist in 3 time ranges, and the genre tags that are saved with the artist name.
 
-for sp_range in ranges:
-    print("range:", sp_range)
-    results = sp.current_user_top_artists(time_range=sp_range, limit=10)
-    for i, item in enumerate(results['items']):
-        print(i, item['name'], item['genres'])
-        #print(i, item['name'], '//', item['artists'][0]['name'])
-    print()
-    
 #%%
 #Gets a lot of genres from the long-range parameter
 
