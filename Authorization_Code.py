@@ -93,17 +93,6 @@ def get_playlist_songs(playlist_id):
     nested.
     
     """
-
-    Parameters
-    ----------
-    playlist_id : TYPE
-        DESCRIPTION.
-
-    Returns
-    -------
-    None.
-
-    """
     pass
 
         
