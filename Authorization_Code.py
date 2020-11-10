@@ -64,7 +64,7 @@ def print_user_top_artists_in_3_ranges():
         print("range:", sp_range)
         results = sp.current_user_top_artists(time_range=sp_range, limit=10)
         for i, item in enumerate(results['items']):
-            print(i, item['name'], item['genres'])
+   sp.         print(i, item['name'], item['genres'])
             #print(i, item['name'], '//', item['artists'][0]['name'])
         print()
         
@@ -86,21 +86,24 @@ def get_user_top_artists_in_3_ranges():
     
 
 #%%
-#Gets a lot of genres from the long-range parameter
 
-# def get_ulongterm_genres(limit):
-#     results = sp.current_user_top_artists(time_range='long_term', limit=limit)
-#     for i, item in enumerate(results['items']):
-#         print(i, item['name'], item['genres'])
-#         #print(i, item['name'], '//', item['artists'][0]['name'])
-#     return results
+def get_playlist_songs(playlist_id):
+    """
+    This is going to take a lot of data transfomrations. It's like 9 layers deep
+    nested.
+    
+    """
 
-# #makes a list of lists. Each item is a list of genre tags. One list per band
-# spam = [i['genres'] for i in results['items']]
+    Parameters
+    ----------
+    playlist_id : TYPE
+        DESCRIPTION.
 
-# #flattens that list of lists into one big list, with repeats
-# flat_list = []
-# for sublist in spam:
-#     for item in sublist:
-#         flat_list.append(item)
+    Returns
+    -------
+    None.
+
+    """
+    pass
+
         
