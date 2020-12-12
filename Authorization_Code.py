@@ -43,7 +43,7 @@ def get_user_top_tracks_artists():
     values = [art_id,art_name,album_name,song_id, song_name, song_popularity]
     
     blob = pd.DataFrame((dict(zip(cols, values))))
-    blob['date'] = datetime.now().strftime("%d-%b-%Y")
+    blob['date'] = datetime.now().strftime("%Y-%m-%d")
     blob.reset_index(inplace=True)
     blob = blob.rename(columns = {'index':'daily_position'})
     blob['daily_position'] = blob['daily_position'] + 1
