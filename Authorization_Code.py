@@ -32,12 +32,14 @@ def get_user_top_tracks_artists():
     Returns a 3x20 dataframe of the top most played tracks in user's short term range
     '''
     x = sp.current_user_top_tracks(time_range='short_term')
-    cols = ['art_id', 'art_name','album_name','song_id']
+    cols = ['art_id', 'art_name','album_name','song_id', 'song_name', 'popularity']
     art_id = [i['artists'][0]['id'] for i in x['items']]
     art_name = [i['artists'][0]['name'] for i in x['items']]
     album_name = [i['album']['name'] for i in x['items']]
-    song_id = [i['external_urls']['spotify'][-22:-1] for i in x['items']]
-    values = [art_id,art_name,album_name,song_id]
+    song_id = [i['external_urls']['spotify'][-22:] for i in x['items']]
+    song_name = [sp.track(i)['name'] for i in song_id]
+    song_popularity = [sp.track(i)['popularity'] for i in song_id]
+    values = [art_id,art_name,album_name,song_id, song_name, song_popularity]
     return pd.DataFrame((dict(zip(cols, values))))
 
 def get_artist_top_ten_tracks(artist_id, country='US'):
@@ -58,15 +60,15 @@ def get_artist_top_ten_tracks(artist_id, country='US'):
 
 #%%
 #Gets top artist in 3 time ranges
-def print_user_top_artists_in_3_ranges():
-    ranges = ['short_term', 'medium_term', 'long_term']
-    for sp_range in ranges:
-        print("range:", sp_range)
-        results = sp.current_user_top_artists(time_range=sp_range, limit=10)
-        for i, item in enumerate(results['items']):
-   sp.         print(i, item['name'], item['genres'])
-            #print(i, item['name'], '//', item['artists'][0]['name'])
-        print()
+# def print_user_top_artists_in_3_ranges():
+#     ranges = ['short_term', 'medium_term', 'long_term']
+#     for sp_range in ranges:
+#         print("range:", sp_range)
+#         results = sp.current_user_top_artists(time_range=sp_range, limit=10)
+#         for i, item in enumerate(results['items']):
+#    sp.         print(i, item['name'], item['genres'])
+#             #print(i, item['name'], '//', item['artists'][0]['name'])
+#         print()
         
 def get_user_top_artists_in_3_ranges():
     '''
