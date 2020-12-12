@@ -11,7 +11,7 @@ import pandas as pd
 import spotipy
 from config import username
 from spotipy.oauth2 import SpotifyOAuth
-#from collections import Counter
+from datetime import datetime
 
 
 scope = 'user-top-read'
@@ -32,6 +32,7 @@ def get_user_top_tracks_artists():
     Returns a 3x20 dataframe of the top most played tracks in user's short term range
     '''
     x = sp.current_user_top_tracks(time_range='short_term')
+    
     cols = ['art_id', 'art_name','album_name','song_id', 'song_name', 'popularity']
     art_id = [i['artists'][0]['id'] for i in x['items']]
     art_name = [i['artists'][0]['name'] for i in x['items']]
@@ -40,7 +41,13 @@ def get_user_top_tracks_artists():
     song_name = [sp.track(i)['name'] for i in song_id]
     song_popularity = [sp.track(i)['popularity'] for i in song_id]
     values = [art_id,art_name,album_name,song_id, song_name, song_popularity]
-    return pd.DataFrame((dict(zip(cols, values))))
+    
+    blob = pd.DataFrame((dict(zip(cols, values))))
+    blob['date'] = datetime.now().strftime("%d-%b-%Y")
+    blob.reset_index(inplace=True)
+    blob = blob.rename(columns = {'index':'daily_position'})
+    blob['daily_position'] = blob['daily_position'] + 1
+    return blob
 
 def get_artist_top_ten_tracks(artist_id, country='US'):
     '''
