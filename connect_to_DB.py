@@ -11,7 +11,7 @@ import sqlite3
 #%% Connect to database and print the SQLite version numbers
 
 try:
-    sqliteConnection = sqlite3.connect('user_top_tracks_per_day.db')
+    sqliteConnection = sqlite3.connect('spotify.db')
     cursor = sqliteConnection.cursor()
     print("Database created and Successfully Connected to SQLite")
 
