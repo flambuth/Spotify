@@ -28,6 +28,37 @@ finally:
         sqliteConnection.close()
         print("The SQLite connection is closed")
         
+#%%
+        
+sqlite_Query = "select * from daily_top20_tracks;"
+cursor.execute(sqlite_Query)
+cursor.fetchall()
+
+product_sql = '''
+INSERT INTO daily_top20_tracks (position, art_id, art_name, album_name, song_id, song_name, popularity, date) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
+
+
+
+
+sqlite_Query = '''
+DELETE from daily_top20_tracks
+WHERE art_name LIKE '%Kid'
+;
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
 #%% Create the table that will hold the daily top 20 chart dumps
         
 try:

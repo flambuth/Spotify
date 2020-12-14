@@ -48,7 +48,8 @@ def get_user_top_tracks_artists():
     blob = blob.rename(columns = {'index':'daily_position'})
     blob['daily_position'] = blob['daily_position'] + 1
     return blob
-
+#%%
+    
 def get_artist_top_ten_tracks(artist_id, country='US'):
     '''
     Returns a 2x10 dataframe of the top most played tracks from an artist. Probably
@@ -64,6 +65,80 @@ def get_artist_top_ten_tracks(artist_id, country='US'):
     song_name = [sp.track(track['uri'])['name'] for track in x['tracks']]
     values = [song_id,song_name]
     return pd.DataFrame((dict(zip(cols, values))))
+
+#%% No Dataframes. Just Dictionaries
+    
+def get_daily_top20_tracks():
+    '''
+    Returns a dictionary of the top most played tracks in user's short term range
+    '''
+    x = sp.current_user_top_tracks(time_range='short_term')
+    
+    cols = ['art_id', 'art_name','album_name','song_id', 'song_name', 'popularity']
+    
+    
+    art_id = [i['artists'][0]['id'] for i in x['items']]
+    art_name = [i['artists'][0]['name'] for i in x['items']]
+    album_name = [i['album']['name'] for i in x['items']]
+    song_id = [i['external_urls']['spotify'][-22:] for i in x['items']]
+    song_name = [sp.track(i)['name'] for i in song_id]
+    popularity = [sp.track(i)['popularity'] for i in song_id]
+    
+    values = [art_id, art_name, album_name, song_id, song_name, popularity]
+    
+    blob = dict(zip(cols, values))
+    date = [datetime.now().strftime("%Y-%m-%d")]*20
+    position = list(range(1,21))
+    blob['position'] = position
+    blob['date'] = date
+    return blob
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #%%
 #Gets top artist in 3 time ranges
