@@ -8,7 +8,7 @@ Created on Sun Dec 13 21:03:27 2020
 
 from Authorization_Code import get_daily_top20_tracks, get_user_top_tracks_artists
 import sqlite3
-
+from datetime import datetime
 
 
 #%% Create the daily 20 tracks dictionary
@@ -44,7 +44,12 @@ for i in range(len(daily_top_20['date'])):
     (daily_top_20['popularity'][i]),
     (daily_top_20['date'][i])]
     cursor.execute(product_sql, track)
-
     
 sqliteConnection.commit()
 cursor.close()
+
+#%% Save's to a csv for back-up
+todays_date = datetime.now().strftime("%d%b%Y")
+
+
+daily_top_20.to_csv(f'CSVs/{todays_date}.csv')
