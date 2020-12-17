@@ -49,7 +49,7 @@ sqliteConnection.commit()
 cursor.close()
 
 #%% Save's to a csv for back-up
-todays_date = datetime.now().strftime("%d%b%Y")
+# todays_date = datetime.now().strftime("%d%b%Y")
 
 
-daily_top_20.to_csv(f'CSVs/{todays_date}.csv')
+# daily_top_20.to_csv(f'CSVs/{todays_date}.csv')

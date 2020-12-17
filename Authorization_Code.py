@@ -21,12 +21,9 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(username=username))
 
 ranges = ['short_term', 'medium_term', 'long_term']
 
-#results = sp.current_user_top_artists()
-#results is a dictionary. Keys = ['items', 'total', 'limit', 'offset', 'href', 'previous', 'next']
-#results['items'] is a list that holds a dictionary as each item
-#   len(results['items']) == 10, the size of the limit parameter
-#results['items'] is a dict. Keys = ['external_urls', 'followers', 'genres', 'href', 'id', 'images', 'name', 'popularity', 'type', 'uri']
+
 #%%
+
 def get_user_top_tracks_artists():
     '''
     Returns a 3x20 dataframe of the top most played tracks in user's short term range
@@ -94,6 +91,32 @@ def get_daily_top20_tracks():
     return blob
 
 
+#%% Just Dictionaries with genre tags added to the process
+    
+def get_daily_top20_tracks_expanded():
+    '''
+    Returns a dictionary of the top most played tracks in user's short term range
+    '''
+    x = sp.current_user_top_tracks(time_range='short_term')
+    
+    cols = ['art_id', 'art_name','album_name','song_id', 'song_name', 'popularity']
+    
+    
+    art_id = [i['artists'][0]['id'] for i in x['items']]
+    art_name = [i['artists'][0]['name'] for i in x['items']]
+    album_name = [i['album']['name'] for i in x['items']]
+    song_id = [i['external_urls']['spotify'][-22:] for i in x['items']]
+    song_name = [sp.track(i)['name'] for i in song_id]
+    popularity = [sp.track(i)['popularity'] for i in song_id]
+    
+    values = [art_id, art_name, album_name, song_id, song_name, popularity]
+    
+    blob = dict(zip(cols, values))
+    date = [datetime.now().strftime("%Y-%m-%d")]*20
+    position = list(range(1,21))
+    blob['position'] = position
+    blob['date'] = date
+    return blob
 
 
 
