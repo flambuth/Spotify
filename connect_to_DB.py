@@ -108,11 +108,10 @@ finally:
 try:
     sqliteConnection = sqlite3.connect('spotify.db')
     cursor = sqliteConnection.cursor()
-    print("Successfully Connected to SQLite")
 
-    query = """ SELECT * FROM daily_top20_tracks"""
+    query = """ SELECT * FROM artists"""
 
-    selection = cursor.execute(query)
+    cursor.execute(query)
     records = cursor.fetchall()
     print("Total rows are:  ", len(records))
     cursor.close()
