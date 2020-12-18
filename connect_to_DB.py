@@ -8,7 +8,7 @@ Created on Fri Dec 11 22:44:44 2020
 from Authorization_Code import get_user_top_tracks_artists
 import sqlite3
 
-#%% Connect to database and print the SQLite version numbers
+#%% Connect to database. Print some boring shit.
 
 try:
     sqliteConnection = sqlite3.connect('spotify.db')
