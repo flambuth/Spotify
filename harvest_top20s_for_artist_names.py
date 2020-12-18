@@ -12,6 +12,7 @@ import sqlite3
 import spotipy
 from config import username
 from spotipy.oauth2 import SpotifyOAuth
+from datetime import datetime
 
 scope = 'user-top-read'
 
@@ -45,7 +46,11 @@ try:
                                 art_id TEXT NOT NULL,
                                 art_name TEXT NOT NULL,
                                 followers INTEGER NOT NULL,
-                                popularity TEXT NOT NULL);'''
+                                genre STRING NOT NULL,
+                                popularity TEXT NOT NULL,
+                                album_count INTEGER NOT NULL,
+                                first_release TEXT NOT NULL,
+                                query_date TEXT NOT NULL);'''
 
     cursor = sqliteConnection.cursor()
     print("Successfully Connected to SQLite")
@@ -77,7 +82,7 @@ sqliteConnection.close()
 
 first_artist = sp.artist(first_song[2])
 
-cols = ['genre', 'art_id','art_name','followers', 'popularity', 'album_count', 'first_release']
+cols = ['genre', 'art_id','art_name','followers', 'popularity', 'album_count', 'first_release', 'query_date']
 
 genre = first_artist['genres'][0]
 art_id = first_artist['id']
@@ -86,12 +91,57 @@ followers = first_artist['followers']['total']
 popularity = first_artist['popularity']
 album_count = len(sp.artist_albums(first_artist['id'])['items'])
 first_release = min([i['release_date'] for i in sp.artist_albums(first_artist['id'])['items']])
+query_date = datetime.now().strftime("%Y-%m-%d")
 
-values = [genre, art_id, art_name,followers, popularity, album_count, first_release]
+values = [genre, art_id, art_name,followers, popularity, album_count, first_release, query_date]
 blob = dict(zip(cols, values))
 
 #%%insert into 
-sqliteConnection = sqlite3.connect('artists.db')
+sqliteConnection = sqlite3.connect('spotify.db')
 cursor = sqliteConnection.cursor()
 
+product_sql = '''
+INSERT INTO artists (art_id, art_name, genre, followers, popularity, album_count, first_release, query_date) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
 
+
+
+
+for track in cursor.execute('SELECT * FROM daily_top20_tracks;'):
+    
+    if len(sp.artist(track[2])['genres']) == 0:
+       genre = 'None'
+    else:
+        genre = sp.artist(track[2])['genres'][0]
+    
+    
+    art_id = track[2]
+    art_name = track[3]
+    followers = sp.artist(track[2])['followers']['total']
+    popularity = track[7]
+    album_count = len(sp.artist_albums(track[2])['items'])
+    first_release = min([track[-1] for i in sp.artist_albums(track[2])['items']])
+    query_date = datetime.now().strftime("%Y-%m-%d")
+
+    values = [art_id, art_name, genre, followers, popularity, album_count, first_release, query_date]
+    for i in values:
+        print(i)
+    print('--------------Beak-------------')
+    #cursor.execute(product_sql, values)
+    
+    
+sqliteConnection.commit()
+cursor.close()
+
+#%%
+sqliteConnection = sqlite3.connect('spotify.db')
+cursor = sqliteConnection.cursor()
+
+product_sql = '''
+INSERT INTO artists (genres, art_id, art_name, followers, popularity, album_count, first_release, query_date) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
+
+for i in sixty_songs:
+    cursor.execute(product_sql, i)
+    sqliteConnection.commit()
+    cursor.close()
