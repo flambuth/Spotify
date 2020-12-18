@@ -28,7 +28,7 @@ finally:
         sqliteConnection.close()
         print("The SQLite connection is closed")
         
-#%%
+#%% Scratchpad
         
 sqlite_Query = "select * from daily_top20_tracks;"
 cursor.execute(sqlite_Query)
@@ -46,18 +46,6 @@ DELETE from daily_top20_tracks
 WHERE art_name LIKE '%Kid'
 ;
 '''
-
-
-
-
-
-
-
-
-
-
-
-
 
 #%% Create the table that will hold the daily top 20 chart dumps
         

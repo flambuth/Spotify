@@ -96,7 +96,7 @@ query_date = datetime.now().strftime("%Y-%m-%d")
 values = [genre, art_id, art_name,followers, popularity, album_count, first_release, query_date]
 blob = dict(zip(cols, values))
 
-#%%insert into 
+#%% Make a list of lists
 sqliteConnection = sqlite3.connect('spotify.db')
 cursor = sqliteConnection.cursor()
 
@@ -105,7 +105,7 @@ INSERT INTO artists (art_id, art_name, genre, followers, popularity, album_count
 VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
 
 
-
+all_the_songs = []
 
 for track in cursor.execute('SELECT * FROM daily_top20_tracks;'):
     
@@ -113,7 +113,6 @@ for track in cursor.execute('SELECT * FROM daily_top20_tracks;'):
        genre = 'None'
     else:
         genre = sp.artist(track[2])['genres'][0]
-    
     
     art_id = track[2]
     art_name = track[3]
@@ -124,16 +123,60 @@ for track in cursor.execute('SELECT * FROM daily_top20_tracks;'):
     query_date = datetime.now().strftime("%Y-%m-%d")
 
     values = [art_id, art_name, genre, followers, popularity, album_count, first_release, query_date]
-    for i in values:
-        print(i)
-    print('--------------Beak-------------')
-    #cursor.execute(product_sql, values)
+    all_the_songs.append(values)        
     
+    all_the_artists = set([i[1] for i in all_the_songs])
     
-sqliteConnection.commit()
-cursor.close()
+    art_names = []
+    unique_arts = []
+    
+    for i in all_the_songs:
+        if i[1] not in art_names:
+            art_names.append(i[1])
+            unique_arts.append(i)
+    
+# sqliteConnection.commit()
+# cursor.close()
 
-#%%
+#%% scratchpad
+
+def retrieve_all_artists_in_db():
+    all_the_songs = []
+
+    for track in cursor.execute('SELECT * FROM daily_top20_tracks;'):
+        
+        if len(sp.artist(track[2])['genres']) == 0:
+           genre = 'None'
+        else:
+            genre = sp.artist(track[2])['genres'][0]
+        
+        art_id = track[2]
+        art_name = track[3]
+        followers = sp.artist(track[2])['followers']['total']
+        popularity = track[7]
+        album_count = len(sp.artist_albums(track[2])['items'])
+        first_release = min([track[-1] for i in sp.artist_albums(track[2])['items']])
+        query_date = datetime.now().strftime("%Y-%m-%d")
+    
+        values = [art_id, art_name, genre, followers, popularity, album_count, first_release, query_date]
+        all_the_songs.append(values)        
+        
+        all_the_artists = set([i[1] for i in all_the_songs])
+    
+    return all_the_artists
+
+def find_unique_artists_list(all_the_artists):
+    art_names = []
+    unique_arts = []
+    
+    for i in all_the_songs:
+        if i[1] not in art_names:
+            art_names.append(i[1])
+            unique_arts.append(i)
+    
+    return unique_arts
+#%%insert into database
+
 sqliteConnection = sqlite3.connect('spotify.db')
 cursor = sqliteConnection.cursor()
 
