@@ -15,24 +15,42 @@ from datetime import datetime
 
 daily_top_20 = get_daily_top20_tracks()
 
-#%% Establish connection with db
+# product_sql = '''
+# INSERT INTO daily_top20_tracks (position, art_id, art_name, album_name, song_id, song_name, popularity, date) 
+# VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
 
-try:
-    sqliteConnection = sqlite3.connect('spotify.db')
-    cursor = sqliteConnection.cursor()
-    sqlite_Query = "select * from daily_top20_tracks;"
-    cursor.execute(sqlite_Query)
+#%% Write to the Database the day's top 20 tracks
 
+# try:
+#     sqliteConnection = sqlite3.connect('spotify.db')
+#     cursor = sqliteConnection.cursor()
+#     sqlite_Query = "select * from daily_top20_tracks;"
+#     cursor.execute(sqlite_Query)
+#     for i in range(len(daily_top_20['date'])):
+#         track = [(daily_top_20['position'][i]),
+#         (daily_top_20['art_id'][i]),
+#         (daily_top_20['art_name'][i]),
+#         (daily_top_20['album_name'][i]),
+#         (daily_top_20['song_id'][i]),
+#         (daily_top_20['song_name'][i]),
+#         (daily_top_20['popularity'][i]),
+#         (daily_top_20['date'][i])]
+#         cursor.execute(product_sql, track)
     
-except sqlite3.Error as error:
-    print("Error while connecting to sqlite", error)
+# except sqlite3.Error as error:
+#     print("Error while connecting to sqlite", error)
+
+# sqliteConnection.commit()
+# cursor.close()
     
-    
-#%% Using the dictionary method
+#%%    
 
 product_sql = '''
 INSERT INTO daily_top20_tracks (position, art_id, art_name, album_name, song_id, song_name, popularity, date) 
 VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
+
+sqliteConnection = sqlite3.connect('spotify.db')
+cursor = sqliteConnection.cursor()
     
 for i in range(len(daily_top_20['date'])):
     track = [(daily_top_20['position'][i]),
@@ -47,9 +65,4 @@ for i in range(len(daily_top_20['date'])):
     
 sqliteConnection.commit()
 cursor.close()
-
-#%% Save's to a csv for back-up
-# todays_date = datetime.now().strftime("%d%b%Y")
-
-
-# daily_top_20.to_csv(f'CSVs/{todays_date}.csv')
+sqliteConnection.close()

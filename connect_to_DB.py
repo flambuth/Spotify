@@ -28,25 +28,22 @@ finally:
         sqliteConnection.close()
         print("The SQLite connection is closed")
         
-#%% Scratchpad
+ 
+#%% Connect to database, SELECT *
+
+def print_db_info(table_name):
+    sqliteConnection = sqlite3.connect('spotify.db')
+    cursor = sqliteConnection.cursor()
+    
+    sqlite_Query = "select * table_name;"
+    cursor.execute(sqlite_Query)
+    print(cursor.fetchall())
+    cursor.close()
         
-sqlite_Query = "select * from daily_top20_tracks;"
-cursor.execute(sqlite_Query)
-cursor.fetchall()
-
-product_sql = '''
-INSERT INTO daily_top20_tracks (position, art_id, art_name, album_name, song_id, song_name, popularity, date) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
-
-
-
-
-sqlite_Query = '''
-DELETE from daily_top20_tracks
-WHERE art_name LIKE '%Kid'
-;
-'''
-
+    if (sqliteConnection):
+        sqliteConnection.close()
+        print("The SQLite connection is closed")
+            
 #%% Create the table that will hold the daily top 20 chart dumps
         
 try:

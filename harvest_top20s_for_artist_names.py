@@ -18,7 +18,7 @@ scope = 'user-top-read'
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(username=username))
 
-#%% FUNCTIONS!
+#%% 
 
 def retrieve_all_artists_in_db():
     all_the_songs = []
@@ -56,24 +56,7 @@ def find_unique_artists_list(all_the_artists):
     
     return unique_arts
 
-#%% Connect to database, SELECT *
-def print_db_info():
-    try:
-        sqliteConnection = sqlite3.connect('spotify.db')
-        cursor = sqliteConnection.cursor()
-    
-        sqlite_Query = "select * from daily_top20_tracks;"
-        cursor.execute(sqlite_Query)
-        print(cursor.fetchall())
-        cursor.close()
-        
-    except sqlite3.Error as error:
-        print("Error while connecting to sqlite", error)
-    finally:
-        if (sqliteConnection):
-            sqliteConnection.close()
-            print("The SQLite connection is closed")
-            
+
 #%% Create the table that will hold the artist names
   
 def create_artists_table():      
@@ -107,33 +90,6 @@ def create_artists_table():
             print("sqlite connection is closed")
 
 
-#%%
-    
-sqliteConnection = sqlite3.connect('spotify.db')
-cursor = sqliteConnection.cursor()
-    
-# for row in cursor.execute('SELECT * FROM daily_top20_tracks;'):
-#     print(row)
-        
-first_song = [i for i in cursor.execute('SELECT * FROM daily_top20_tracks;')][1]
-cursor.close()
-sqliteConnection.close()
-
-first_artist = sp.artist(first_song[2])
-
-cols = ['genre', 'art_id','art_name','followers', 'popularity', 'album_count', 'first_release', 'query_date']
-
-genre = first_artist['genres'][0]
-art_id = first_artist['id']
-art_name = first_artist['name']
-followers = first_artist['followers']['total']
-popularity = first_artist['popularity']
-album_count = len(sp.artist_albums(first_artist['id'])['items'])
-first_release = min([i['release_date'] for i in sp.artist_albums(first_artist['id'])['items']])
-query_date = datetime.now().strftime("%Y-%m-%d")
-
-values = [genre, art_id, art_name,followers, popularity, album_count, first_release, query_date]
-blob = dict(zip(cols, values))
 
 #%% Make a list of lists
 sqliteConnection = sqlite3.connect('spotify.db')
@@ -188,9 +144,35 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
 x = find_unique_artists_list(retrieve_all_artists_in_db())
     
 for artist in range(len(x)):
-    cursor.execute(product_sql, (artist))
     
+    cursor.execute(product_sql, (artist))
+
 sqliteConnection.commit()
 cursor.close()
 
+sqliteConnection = sqlite3.connect('spotify.db')
+cursor = sqliteConnection.cursor()
     
+# for row in cursor.execute('SELECT * FROM daily_top20_tracks;'):
+#     print(row)
+        
+first_song = [i for i in cursor.execute('SELECT * FROM daily_top20_tracks;')][1]
+cursor.close()
+sqliteConnection.close()
+
+first_artist = sp.artist(first_song[2])
+
+cols = ['genre', 'art_id','art_name','followers', 'popularity', 'album_count', 'first_release', 'query_date']
+
+genre = first_artist['genres'][0]
+art_id = first_artist['id']
+art_name = first_artist['name']
+followers = first_artist['followers']['total']
+popularity = first_artist['popularity']
+album_count = len(sp.artist_albums(first_artist['id'])['items'])
+first_release = min([i['release_date'] for i in sp.artist_albums(first_artist['id'])['items']])
+query_date = datetime.now().strftime("%Y-%m-%d")
+
+values = [genre, art_id, art_name,followers, popularity, album_count, first_release, query_date]
+blob = dict(zip(cols, values))
+   
