@@ -26,9 +26,11 @@ artists= Table(
     ID = Column(Integer)
     art_id = Column(Integer, primary_key=True),
     art_name = Column(String(250)),
-    song_name = Column(String(250)),
-    popularity = Column(Integer),
-    date  = Column(String(250))
+    followers = Column(String(250)),
+    genre = Column(Integer),
+    popularity  = Column(String(250))
+    first_release  = Column(String(250))
+    query_date = Column()
 )
     
 '''
