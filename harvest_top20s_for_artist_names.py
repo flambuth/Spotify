@@ -13,6 +13,7 @@ import spotipy
 from config import username
 from spotipy.oauth2 import SpotifyOAuth
 from datetime import datetime
+import pandas as pd
 
 scope = 'user-top-read'
 
@@ -133,46 +134,33 @@ for track in cursor.execute('SELECT * FROM daily_top20_tracks;'):
 # sqliteConnection.commit()
 # cursor.close()
 
+#%% making changes to ignore artists that are already in the artist table
+
+conn = sqlite3.connect("spotify.db")
+df_artists = pd.read_sql_query("select * from artists;", conn)
+df_artists = df_artists.set_index('id')
+df_songs = pd.read_sql_query('SELECT * FROM daily_top20_tracks;', conn)
+df_songs = df_songs.set_index('id')
+
+#artist names that are not in the artist table
+artists_to_add = df_songs[~df_songs.art_name.isin(df_artists.art_name)].art_name.unique()
+
+bl
+
+for i in df_songs[df_songs.art_name.isin(artists_to_add)]:
+    print(i)
+    
+def create_unique_artist_rows():
+    conn = sqlite3.connect("spotify.db")
+    df_artists = pd.read_sql_query("select * from artists;", conn)
+    df_artists = df_artists.set_index('id')
+    df_songs = pd.read_sql_query('SELECT * FROM daily_top20_tracks;', conn)
+    df_songs = df_songs.set_index('id')
+    
+    #artist names that are not in the artist table
+    artists_to_add = df_songs[~df_songs.art_name.isin(df_artists.art_name)].art_name.unique()
+    
+    df_songs[df_songs.art_name.isin(artists_to_add)]
+
+
 #%% scratchpad
-sqliteConnection = sqlite3.connect('spotify.db')
-cursor = sqliteConnection.cursor()            
-            
-product_sql = '''
-INSERT INTO artists (art_id, art_name, genre, followers, popularity, album_count, first_release, query_date) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?) '''
-
-x = find_unique_artists_list(retrieve_all_artists_in_db())
-    
-for artist in range(len(x)):
-    
-    cursor.execute(product_sql, (artist))
-
-sqliteConnection.commit()
-cursor.close()
-
-sqliteConnection = sqlite3.connect('spotify.db')
-cursor = sqliteConnection.cursor()
-    
-# for row in cursor.execute('SELECT * FROM daily_top20_tracks;'):
-#     print(row)
-        
-first_song = [i for i in cursor.execute('SELECT * FROM daily_top20_tracks;')][1]
-cursor.close()
-sqliteConnection.close()
-
-first_artist = sp.artist(first_song[2])
-
-cols = ['genre', 'art_id','art_name','followers', 'popularity', 'album_count', 'first_release', 'query_date']
-
-genre = first_artist['genres'][0]
-art_id = first_artist['id']
-art_name = first_artist['name']
-followers = first_artist['followers']['total']
-popularity = first_artist['popularity']
-album_count = len(sp.artist_albums(first_artist['id'])['items'])
-first_release = min([i['release_date'] for i in sp.artist_albums(first_artist['id'])['items']])
-query_date = datetime.now().strftime("%Y-%m-%d")
-
-values = [genre, art_id, art_name,followers, popularity, album_count, first_release, query_date]
-blob = dict(zip(cols, values))
-   
