@@ -13,7 +13,6 @@ import spotipy
 from config import username
 from spotipy.oauth2 import SpotifyOAuth
 from datetime import datetime
-import pandas as pd
 
 scope = 'user-top-read'
 
@@ -107,16 +106,15 @@ def upload_new_artists(new_songs):
     sqliteConnection.close()
 
 
-#     for i in range(len(daily_top_20['date'])):
-#         track = [(daily_top_20['position'][i]),
-#         (daily_top_20['art_id'][i]),
-#         (daily_top_20['art_name'][i]),
-#         (daily_top_20['album_name'][i]),
-#         (daily_top_20['song_id'][i]),
-#         (daily_top_20['song_name'][i]),
-#         (daily_top_20['popularity'][i]),
-#         (daily_top_20['date'][i])]
-#         cursor.execute(product_sql, track)
+#%% Prune the database
+product_sql = '''
+SELECT DISTINCT art_name,
+
+'''
+
+sqliteConnection = sqlite3.connect('spotify.db')
+cursor = sqliteConnection.cursor()
+blob = cursor.execute(product_sql)
 
 #%% old functions
         
