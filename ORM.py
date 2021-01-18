@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+'''
+Some roads are only seen at night.
+Ghost roads, nothing but neon signs.
+'''
 from sqlalchemy import Column, ForeignKey, Integer, String, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -21,7 +25,7 @@ daily_top20_tracks= Table(
 )
     
 artists= Table(
-    "artits",
+    "artitss",
     Base.metadata,
     ID = Column(Integer)
     art_id = Column(Integer, primary_key=True),

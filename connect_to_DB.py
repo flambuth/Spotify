@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Dec 11 22:44:44 2020
-
+I'm hitting hard, oh word, I'm gon rock it
+Once the shit drops, that's dough to the pocket
 @author: flamb
 """
 
@@ -119,3 +120,20 @@ finally:
     if (sqliteConnection):
         sqliteConnection.close()
         print("The SQLite connection is closed")
+
+#%% RETURN THE LIST OF UNIQUE ARTIST NAMES IN THE ARTISTS Table
+def get_artists_from_db():
+    try:
+        sqliteConnection = sqlite3.connect('spotify.db')
+        select_query = (''' SELECT DISTINCT art_name FROM artists''')
+        cursor = sqliteConnection.cursor()
+        cursor.execute(select_query)
+        records = cursor.fetchall()
+        
+    except sqlite3.Error as error:
+        print("Something went wrong", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("The SQLite connection is closed")
+            return(records)

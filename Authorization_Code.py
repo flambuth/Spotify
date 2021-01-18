@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Sep  7 21:56:09 2020
-
+Tú me dejaste de querer cuando te necesitaba
+Cuando más falta hacía tú me diste la espalda
 ranges = 
 long_term (calculated from several years of data and including all new data as it becomes available), 
 medium_term (approximately last 6 months), 
