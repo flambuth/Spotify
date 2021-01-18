@@ -47,4 +47,5 @@ CREATE TABLE artists (
                                     popularity TEXT NOT NULL,
                                     album_count INTEGER NOT NULL,
                                     first_release TEXT NOT NULL,
-                                    query_date TEXT NOT NULL);'''
+                                    query_date TEXT NOT NULL);
+'''

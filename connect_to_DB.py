@@ -101,17 +101,20 @@ finally:
         sqliteConnection.close()
         print("sqlite connection is closed")
 
-#%%TRY-CATCH TEMPLATE FOR EXECUTING SQLITE Commands
+#%%DROP DUPLICATE ARTISTS ROWS
         
 try:
     sqliteConnection = sqlite3.connect('spotify.db')
     cursor = sqliteConnection.cursor()
 
-    query = """ SELECT * FROM artists"""
+    query = """ DELETE FROM artists WHERE rowid NOT IN (SELECT min(rowid) FROM artists GROUP BY art_id) """
 
     cursor.execute(query)
-    records = cursor.fetchall()
-    print("Total rows are:  ", len(records))
+    
+    select_query = (''' SELECT * FROM artists''')
+    cursor.execute(query)
+    blob = cursor.fetchall()
+    
     cursor.close()
 
 except sqlite3.Error as error:
@@ -136,4 +139,4 @@ def get_artists_from_db():
         if (sqliteConnection):
             sqliteConnection.close()
             print("The SQLite connection is closed")
-            return(records)
+            return([i[0] for i in records])

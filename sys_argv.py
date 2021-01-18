@@ -9,10 +9,15 @@ Will somebody, please, push some tacks in my eyes?
 
 
 import sys
-import hashlib
+from connect_to_DB import get_artists_from_db
+# import hashlib
 
 
-data = sys.argv[1]
-m = hashlib.sha1()
-m.update(bytes(data, 'utf-8'))
-print(m.hexdigest())
+# data = sys.argv[1]
+# m = hashlib.sha1()
+# m.update(bytes(data, 'utf-8'))
+# print(m.hexdigest())
+
+chunk = sys.argv[1]
+
+
