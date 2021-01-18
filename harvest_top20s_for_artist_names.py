@@ -109,16 +109,6 @@ def upload_new_artists(new_songs):
     sqliteConnection.close()
 
 
-#%% Prune the database
-product_sql = '''
-SELECT DISTINCT art_name,
-
-'''
-
-sqliteConnection = sqlite3.connect('spotify.db')
-cursor = sqliteConnection.cursor()
-blob = cursor.execute(product_sql)
-
 #%% old functions
         
 def retrieve_all_artists_in_db():
