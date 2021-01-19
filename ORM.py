@@ -25,7 +25,7 @@ daily_top20_tracks= Table(
 )
     
 artists= Table(
-    "artitss",
+    "artists",
     Base.metadata,
     ID = Column(Integer)
     art_id = Column(Integer, primary_key=True),
@@ -49,3 +49,32 @@ CREATE TABLE artists (
                                     first_release TEXT NOT NULL,
                                     query_date TEXT NOT NULL);
 '''
+
+#%% Object Relational Tutorial
+
+import sqlalchemy
+
+sqlalchemy.__version__
+
+engine = sqlalchemy.create_engine('sqlite:///:spotify.db', echo=True)
+
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+
+from sqlalchemy import Column, Integer, String
+
+class artist(Base):
+    __tablename__ = 'artists'
+    ID = Column(Integer)
+    art_id = Column(Integer, primary_key=True)
+    art_name = Column(String(250))
+    followers = Column(String(250))
+    genre = Column(String(250))
+    popularity  = Column(Integer)
+    first_release  = Column(String(250))
+    
+    def __repr__(self):
+        return "<User(Artist(art_id='%s', art_name='%s', genre='%s')>" % (self.art_id, self,art_name, self.genre)
+
+#reads out what i defined in the class definition
+artist.__table__
