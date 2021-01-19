@@ -8,6 +8,7 @@ Created on Sat Sep  5 20:50:41 2020
 import pandas as pd
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from datetime import datetime
 
 client_credentials_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
@@ -41,17 +42,17 @@ def convert_song_id_to_name(song_id):
 
 
 #%%
-artist_name = []
-track_name = []
-popularity = []
-track_id = []
 
-for i in range(0,10,50):
-    track_results = sp.search(q='year:2018', type='track', limit=50,offset=i)
-    for i, t in enumerate(track_results['tracks']['items']):
-        artist_name.append(t['artists'][0]['name'])
-        track_name.append(t['name'])
-        track_id.append(t['id'])
-        popularity.append(t['popularity'])
+def get_formatted_artist(art_id):
+    sp_object = sp.artist(art_id)
+    if len(sp.artist(art_id)['genres']) == 0:
+        genre = 'None'
+    else:
+        genre = sp.artist(art_id)['genres'][0]
+    album_count = len(sp.artist_albums(art_id)['items']) 
+    first_release = min([i['release_date'] for i in sp.artist_albums(art_id)['items']])
+    query_date = query_date = datetime.now().strftime("%Y-%m-%d")
+    return [sp_object['id'], sp_object['name'], sp_object['followers'], genre, sp_object['popularity'], album_count, first_release, query_date]
         
 #%%
+"0DgsuiMZylmPOYkrVOqNYQ"

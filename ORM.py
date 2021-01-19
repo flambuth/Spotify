@@ -13,8 +13,8 @@ Base = declarative_base()
 daily_top20_tracks= Table(
     "daily_top20_tracks",
     Base.metadata,
-    ID = Column(Integer, primary_key=True)
-    position = Column(Integer, primary_key=True)
+    ID = Column(Integer, primary_key=True),
+    position = Column(Integer),
     art_id = Column(Integer),
     art_name = Column(String(250)),
     album_name = Column(String(250)),
@@ -27,14 +27,14 @@ daily_top20_tracks= Table(
 artists= Table(
     "artists",
     Base.metadata,
-    ID = Column(Integer)
+#    ID = Column(Integer)
     art_id = Column(Integer, primary_key=True),
     art_name = Column(String(250)),
     followers = Column(String(250)),
     genre = Column(Integer),
-    popularity  = Column(String(250))
-    first_release  = Column(String(250))
-    query_date = Column()
+    popularity  = Column(String(250)),
+    first_release  = Column(String(250)),
+    query_date = Column(String(250))
 )
     
 '''
@@ -56,7 +56,7 @@ import sqlalchemy
 
 sqlalchemy.__version__
 
-engine = sqlalchemy.create_engine('sqlite:///:spotify.db', echo=True)
+engine = sqlalchemy.create_engine('sqlite:///spotify.db', echo=True)
 
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
@@ -65,7 +65,6 @@ from sqlalchemy import Column, Integer, String
 
 class artist(Base):
     __tablename__ = 'artists'
-    ID = Column(Integer)
     art_id = Column(Integer, primary_key=True)
     art_name = Column(String(250))
     followers = Column(String(250))
@@ -74,7 +73,14 @@ class artist(Base):
     first_release  = Column(String(250))
     
     def __repr__(self):
-        return "<User(Artist(art_id='%s', art_name='%s', genre='%s')>" % (self.art_id, self,art_name, self.genre)
+        return "<Artist(art_id='%s', art_name='%s', genre='%s')>" % (self.art_id, self.art_name, self.genre)
 
-#reads out what i defined in the class definition
+#reads out what i defined in the class declaration
 artist.__table__
+
+#quick and dirty test to see what happens when I very manually create an artist object that i just declared
+blob = [1,'Cool Ghouls', 9155, 'bay area indie', 29, '2013-04-23']
+coolGhouls = artist(art_id=1,art_name='Cool Ghouls')
+
+from sqlalchemy.orm import sessionmaker
+Session = sessionmaker(bind=engine)

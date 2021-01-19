@@ -30,4 +30,4 @@ df.groupby(['art_name'])['chart_power'].sum().sort_values(ascending=False)
 
 #%% each time this line is run, it sums up the chart_power, limited by the date yielded by generator
 blob = df[df.date <= next(date_gen)].groupby(['art_name'])['chart_power'].sum().sort_values(ascending=False)
-blob.plot.bar()
+blob.iloc[:10].plot.bar()
