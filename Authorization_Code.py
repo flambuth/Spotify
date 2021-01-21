@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Sep  7 21:56:09 2020
+I wrote this module first. It probably can do with some refactoring.
+
 Tú me dejaste de querer cuando te necesitaba
 Cuando más falta hacía tú me diste la espalda
     ranges = 
@@ -22,16 +24,23 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(username=username))
 
 ranges = ['short_term', 'medium_term', 'long_term']
 
-#%% I wrote this module first. It probably can do with some refactoring.
-#SCRATCHPAD
+#%% SCRATCHPAD
 
 def playlist_songs(playlistID):
     playlist = sp.playlist(playlistID)
     
     tracks = [i for i in playlist['tracks']['items']]
+    
+
     return tracks
 
+song_names = [i['track']['name'] for i in tracks]
+artists = [i['track']['artists'][0]['name'] for i in tracks]
 
+{artists[i]:song_names[i] for i in range(len(artists))}
+list(enumerate(zip(artists,song_names)))
+
+##
 work_jamsID = '7p3GLg1q3sYMnixpvQClLy'
 
 #This is the playlistID for "Work Jams". Blob is a dict
@@ -60,6 +69,8 @@ work_jams['tracks']['items'][2]['track']['popularity']
 
 #Artist Genres (Requires an API call)
 genres = sp.artist(pietastersID)['genres']
+
+
 #%%
 
 def get_user_top_tracks_artists():
