@@ -30,9 +30,10 @@ def playlist_songs(playlistID):
     playlist = sp.playlist(playlistID)
     
     tracks = [i for i in playlist['tracks']['items']]
-    
+    song_names = [i['track']['name'] for i in tracks]
+    artists = [i['track']['artists'][0]['name'] for i in tracks]
 
-    return tracks
+    return list(enumerate(zip(artists,song_names)))
 
 song_names = [i['track']['name'] for i in tracks]
 artists = [i['track']['artists'][0]['name'] for i in tracks]
