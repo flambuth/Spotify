@@ -24,7 +24,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(username=username))
 
 ranges = ['short_term', 'medium_term', 'long_term']
 
-#%% SCRATCHPAD
+#%% Get songs in a playlist
 
 def playlist_songs(playlistID):
     playlist = sp.playlist(playlistID)
@@ -35,41 +35,7 @@ def playlist_songs(playlistID):
 
     return list(enumerate(zip(artists,song_names)))
 
-song_names = [i['track']['name'] for i in tracks]
-artists = [i['track']['artists'][0]['name'] for i in tracks]
-
-{artists[i]:song_names[i] for i in range(len(artists))}
-list(enumerate(zip(artists,song_names)))
-
-##
-work_jamsID = '7p3GLg1q3sYMnixpvQClLy'
-
-#This is the playlistID for "Work Jams". Blob is a dict
-work_jams = sp.playlist('7p3GLg1q3sYMnixpvQClLy')
-
-#This is another dictionary.
-work_jams['tracks']
-
-#Finally a list of tracks
-work_jams['tracks']['items']
-
-#This is the 3rd song in Work Jams, Out All Night by The Pietasters
-work_jams['tracks']['items'][2]
-
-#Artist Name
-pietasters = work_jams['tracks']['items'][2]['track']['artists'][0]['name']
-pietastersID = work_jams['tracks']['items'][2]['track']['artists'][0]['id']
-
-#Song Name
-out_all_night = work_jams['tracks']['items'][2]['track']['name']
-
-#Album Name
-
-#Song Popularity. I still don't understand this number
-work_jams['tracks']['items'][2]['track']['popularity']
-
-#Artist Genres (Requires an API call)
-genres = sp.artist(pietastersID)['genres']
+OST_Codeup = '7yEJxuqFxzyExbEVj19Set'
 
 
 #%%
