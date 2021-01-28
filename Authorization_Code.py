@@ -41,8 +41,13 @@ def playlist_songs(playlistID):
 
     return list(enumerate(zip(artists,song_names)))
 
-OST_Codeup = '7yEJxuqFxzyExbEVj19Set'
 
+#%% recent tracks
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(username=username, scope='user-read-recently-played'))
+
+def get_recent_tracks():
+    return sp.current_user_recently_played()
 
 
 #%% No Dataframes. Just Dictionaries
