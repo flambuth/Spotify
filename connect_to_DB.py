@@ -140,3 +140,31 @@ def get_artists_from_db():
             sqliteConnection.close()
             print("The SQLite connection is closed")
             return([i[0] for i in records])
+        
+#%% Create the table that will hold the daily top 20 artists dumps
+        
+try:
+    sqliteConnection = sqlite3.connect('spotify.db')
+    sqlite_create_table_query = '''CREATE TABLE daily_top20_artists (
+                                id INTEGER PRIMARY KEY,
+                                position TEXT NOT NULL,
+                                art_id TEXT NOT NULL,
+                                art_name TEXT NOT NULL,
+                                popularity INT NOT NULL,
+                                followers INT NOT NULL,
+                                date datetime);'''
+
+    cursor = sqliteConnection.cursor()
+    print("Successfully Connected to SQLite")
+    cursor.execute(sqlite_create_table_query)
+    sqliteConnection.commit()
+    print("SQLite table created")
+
+    cursor.close()
+
+except sqlite3.Error as error:
+    print("Error while creating a sqlite table", error)
+finally:
+    if (sqliteConnection):
+        sqliteConnection.close()
+        print("sqlite connection is closed")

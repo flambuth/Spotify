@@ -7,14 +7,15 @@ And a million miles of highway in between
 """
 
 
-from Authorization_Code import get_daily_top20_tracks, get_user_top_tracks_artists
+from Authorization_Code import get_daily_top20_tracks, get_top_artists
 import sqlite3
-from datetime import datetime
+#from datetime import datetime
 
 
 #%% Create the daily 20 tracks dictionary
 
 daily_top_20 = get_daily_top20_tracks()
+daily_top_artists = get_top_artists()
 
 # product_sql = '''
 # INSERT INTO daily_top20_tracks (position, art_id, art_name, album_name, song_id, song_name, popularity, date) 
@@ -63,6 +64,27 @@ for i in range(len(daily_top_20['date'])):
     (daily_top_20['popularity'][i]),
     (daily_top_20['date'][i])]
     cursor.execute(product_sql, track)
+    
+sqliteConnection.commit()
+cursor.close()
+sqliteConnection.close()
+
+#%% Refactoring to make a function. Then repeat that function call for the daily top 20 
+artists_sql = '''
+INSERT INTO daily_top20_artists(position, art_id, art_name, popularity, followers, date) 
+VALUES (?, ?, ?, ?, ?, ?) '''
+
+sqliteConnection = sqlite3.connect('spotify.db')
+cursor = sqliteConnection.cursor()
+    
+for i in range(len(daily_top_artists['date'])):
+    artist = [(daily_top_artists['position'][i]),
+    (daily_top_artists['art_id'][i]),
+    (daily_top_artists['art_name'][i]),
+    (daily_top_artists['popularity'][i]),
+    (daily_top_artists['followers'][i]),   
+    (daily_top_artists['date'][i])]
+    cursor.execute(artists_sql, artist)
     
 sqliteConnection.commit()
 cursor.close()
