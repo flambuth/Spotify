@@ -75,6 +75,19 @@ def get_daily_top20_tracks():
     blob['date'] = date
     return blob
 
+#%% Get songs in a playlist. Rate limited at 100 tracks.
+
+def playlist_songs(playlistID):
+    playlist = sp.playlist(playlistID)
+    
+    tracks = [i for i in playlist['tracks']['items']]
+    
+    song_names = [i['track']['name'] for i in tracks]
+    artists = [i['track']['artists'][0]['name'] for i in tracks]
+
+    return list(enumerate(zip(artists,song_names)))
+
+
 
 #%% Just Dictionaries with genre tags added to the process
     
@@ -144,17 +157,6 @@ def get_daily_top20_tracks():
 #     blob = blob.rename(columns = {'index':'daily_position'})
 #     blob['daily_position'] = blob['daily_position'] + 1
 #     return blob
-
-#%% Get songs in a playlist
-
-# def playlist_songs(playlistID):
-#     playlist = sp.playlist(playlistID)
-    
-#     tracks = [i for i in playlist['tracks']['items']]
-#     song_names = [i['track']['name'] for i in tracks]
-#     artists = [i['track']['artists'][0]['name'] for i in tracks]
-
-#     return list(enumerate(zip(artists,song_names)))
 
 
 #%% recent tracks
