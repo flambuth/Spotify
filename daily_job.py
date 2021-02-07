@@ -8,6 +8,7 @@ And a million miles of highway in between
 
 
 from Authorization_Code import get_daily_top20_tracks, get_top_artists
+from harvest import find_new_artists_in_tracks, upload_new_artists
 import sqlite3
 #from datetime import datetime
 
@@ -89,3 +90,8 @@ for i in range(len(daily_top_artists['date'])):
 sqliteConnection.commit()
 cursor.close()
 sqliteConnection.close()
+
+#%% Harvests the top20_tracks database for new artists. They are added to the artist table if there is at least one.
+blob = find_new_artists_in_tracks()
+if len(blob) > 0:
+    upload_new_artists(blob)
