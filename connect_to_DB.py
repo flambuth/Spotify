@@ -4,6 +4,10 @@ Created on Fri Dec 11 22:44:44 2020
 I'm hitting hard, oh word, I'm gon rock it
 Once the shit drops, that's dough to the pocket
 @author: flamb
+
+I used this command in the terminal to move one table to another:
+    
+sqlite3 spotify.db ".dump artists" | sqlite3 db.sqlite3
 """
 
 from Authorization_Code import get_user_top_tracks_artists
