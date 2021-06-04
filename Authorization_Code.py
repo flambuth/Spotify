@@ -1,3 +1,4 @@
+#%%
 # -*- coding: utf-8 -*-
 """
 Created on Mon Sep  7 21:56:09 2020
@@ -120,43 +121,7 @@ def playlist_songs(playlistID):
 
 #%%
     
-# def get_artist_top_ten_tracks(artist_id, country='US'):
-#     '''
-#     Returns a 2x10 dataframe of the top most played tracks from an artist. Probably
-#     of all time.
-       
-#     Country set to default. Can only do one country at a time. Set the default for US.
-#     Not sure what happens if country isn't set.
-#     https://api.spotify.com/v1/artists/{id}/top-tracks
-#     '''
-#     x =  sp.artist_top_tracks(artist_id, country)
-#     cols = ['song_id', 'song_name'] 
-#     song_id = [track['uri'][-22:-1] for track in x['tracks']]
-#     song_name = [sp.track(track['uri'])['name'] for track in x['tracks']]
-#     values = [song_id,song_name]
-#     return pd.DataFrame((dict(zip(cols, values))))
-    
-# def get_user_top_tracks_artists():
-#     '''
-#     Returns a 3x20 dataframe of the top most played tracks in user's short term range
-#     '''
-#     x = sp.current_user_top_tracks(time_range='short_term')
-    
-#     cols = ['art_id', 'art_name','album_name','song_id', 'song_name', 'popularity']
-#     art_id = [i['artists'][0]['id'] for i in x['items']]
-#     art_name = [i['artists'][0]['name'] for i in x['items']]
-#     album_name = [i['album']['name'] for i in x['items']]
-#     song_id = [i['external_urls']['spotify'][-22:] for i in x['items']]
-#     song_name = [sp.track(i)['name'] for i in song_id]
-#     song_popularity = [sp.track(i)['popularity'] for i in song_id]
-#     values = [art_id,art_name,album_name,song_id, song_name, song_popularity]
-    
-#     blob = pd.DataFrame((dict(zip(cols, values))))
-#     blob['date'] = datetime.now().strftime("%Y-%m-%d")
-#     blob.reset_index(inplace=True)
-#     blob = blob.rename(columns = {'index':'daily_position'})
-#     blob['daily_position'] = blob['daily_position'] + 1
-#     return blob
+
 
 
 #%% recent tracks

@@ -104,3 +104,9 @@ def upload_new_artists(new_songs):
     cursor.close()
     sqliteConnection.close()
 
+#%%Add images to Artist2
+
+def upload_images():
+    washedOut = sp.artist('5juOkIIy18sFw9L30syt1Z')
+    washedOut['images'][2]['url']
+    pass
